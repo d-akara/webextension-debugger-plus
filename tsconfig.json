@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+        "module": "system",
+        "outDir": "dist",
+        "rootDirs": [
+            "../webextension-common"
+        ],
+        "target": "esnext",
+        "moduleResolution": "node",
+        "typeRoots": ["node_modules/@types", "node_modules/web-ext-types"],
+        "baseUrl": "."
+    }
+}

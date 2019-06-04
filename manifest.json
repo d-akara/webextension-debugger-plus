@@ -1,0 +1,50 @@
+{
+    "manifest_version": 2,
+
+    "name": "webextension-debugger",
+    "description": "Devtools Debugger Plus",
+    "version": "1.0",
+    "author": "Chad Meadows",
+
+    "background": { // background for long term state
+        "scripts": ["dist/polyfills.js", "dist/webextension-common.js","dist/background.js"]
+    },
+
+    "browser_action": {  // create a browser toolbar entry
+        "default_title": "Devtools Debugger Plus",
+        "default_icon": "icons/chevron-double-up.png",
+        "browser_style": true
+    },
+
+    "options_ui": { "page": "src/webextension/options/Options.html"},
+    "devtools_page": "src/webextension/devtools/Devtools.html",
+    
+    
+    "content_scripts": [{ // runs in context of a loaded page
+        "matches": ["<all_urls>"],
+        "js": ["dist/polyfills.js", "dist/webextension-common.js", "dist/page-proxy.js"],
+        "run_at": "document_start"
+        }],
+        
+    "commands": { // note, bindings do not show in chrome if there is already a pre-existing binding of same keys
+        "start": {
+            "suggested_key": {
+                "default": "Ctrl+Shift+Space"
+            },
+            "description": "run command"
+        }
+    },
+    
+    "permissions": [
+        "activeTab",
+        "webNavigation",
+        "storage"
+    ],
+    
+    // allow a script to be injected into the page source
+    "web_accessible_resources": ["dist/debug-api.js"]
+    
+    // page actions don't seem that useful.
+    // you can't hide the action.  hide/show actuall enable or disable
+    // "page_action": {},
+}

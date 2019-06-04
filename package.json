@@ -1,0 +1,19 @@
+{
+    "name": "webextension-debugger-plus",
+    "description": "Additional devtools features",
+    "authors": "Chad Meadows",
+    "version": "1.0.0",
+    "main": "main",
+    "scripts": {
+        "build-watch": "node fuse.js"
+    },
+    "dependencies": {
+        "webextension-common": "file:../webextension-common"
+    },
+    "devDependencies": {
+        "webextension-polyfill": "^0.3.1",
+        "web-ext-types": "github:michael-zapata/web-ext-types",
+        "fuse-box": "^3.6.0",
+        "typescript": "^3.5.1"
+    }
+}
