@@ -5,7 +5,8 @@
     "version": "1.0.0",
     "main": "main",
     "scripts": {
-        "build-watch": "node fuse.js"
+        "build-watch": "node fuse.js",
+        "build-injections": "cd src/page-injection && tsc"
     },
     "dependencies": {
         "webextension-common": "file:../webextension-common"

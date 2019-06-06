@@ -33,7 +33,7 @@
 
     function interceptProperty(object, propertyName, getFunction, setFunction, conditionFunction) {
         const originalPropertyDescriptor = Object.getOwnPropertyDescriptor(object, propertyName);
-        const newPropertyDescriptor = {
+        const newPropertyDescriptor:any = {
             //enumerable: originalPropertyDescriptor.enumerable,
             configurable: true
         }
@@ -102,22 +102,22 @@
     function testContainsAttribute() {}
 
     const inspectElementsConfig = Object.assign(Object.create(null), {
-        appendChild:   {prototype: Node.prototype,          fnInspectWhen: testContainsAttribute},
-        insertBefore:  {prototype: Node.prototype,          fnInspectWhen: testContainsAttribute},
-        replaceChild:  {prototype: Node.prototype,          fnInspectWhen: testContainsAttribute},
-        removeChild:   {prototype: Node.prototype,          fnInspectWhen: testContainsAttribute},
-        appendData:    {prototype: CharacterData.prototype, fnInspectWhen: testContainsAttribute},
-        deleteData:    {prototype: CharacterData.prototype, fnInspectWhen: testContainsAttribute},
-        insertData:    {prototype: CharacterData.prototype, fnInspectWhen: testContainsAttribute},
-        replaceData:   {prototype: CharacterData.prototype, fnInspectWhen: testContainsAttribute},
-        substringData: {prototype: CharacterData.prototype, fnInspectWhen: testContainsAttribute},
-        innerHTML:     {prototype: Element.prototype,       fnInspectWhen: testContainsAttribute},
-        outerHTML:     {prototype: Element.prototype,       fnInspectWhen: testContainsAttribute},
-        textContent:   {prototype: Node.prototype,          fnInspectWhen: testContainsAttribute},
-        innerText:     {prototype: HTMLElement.prototype,   fnInspectWhen: testContainsAttribute},
-        outerText:     {prototype: HTMLElement.prototype,   fnInspectWhen: testContainsAttribute},
-        data:          {prototype: CharacterData.prototype, fnInspectWhen: testContainsAttribute},
-        nodeValue:     {prototype: Node.prototype,          fnInspectWhen: testContainsAttribute},
+        appendChild:   {prototype: Node.prototype,                      fnInspectWhen: testContainsAttribute},
+        insertBefore:  {prototype: Node.prototype,                      fnInspectWhen: testContainsAttribute},
+        replaceChild:  {prototype: Node.prototype,                      fnInspectWhen: testContainsAttribute},
+        removeChild:   {prototype: Node.prototype,                      fnInspectWhen: testContainsAttribute},
+        appendData:    {prototype: CharacterData.prototype,             fnInspectWhen: testContainsAttribute},
+        deleteData:    {prototype: CharacterData.prototype,             fnInspectWhen: testContainsAttribute},
+        insertData:    {prototype: CharacterData.prototype,             fnInspectWhen: testContainsAttribute},
+        replaceData:   {prototype: CharacterData.prototype,             fnInspectWhen: testContainsAttribute},
+        substringData: {prototype: CharacterData.prototype,             fnInspectWhen: testContainsAttribute},
+        innerHTML:     {prototype: Element.prototype,                   fnInspectWhen: testContainsAttribute},
+        outerHTML:     {prototype: Element.prototype,                   fnInspectWhen: testContainsAttribute},
+        textContent:   {prototype: Node.prototype,                      fnInspectWhen: testContainsAttribute},
+        innerText:     {prototype: HTMLElement.prototype,               fnInspectWhen: testContainsAttribute},
+        outerText:     {prototype: HTMLElement.prototype,               fnInspectWhen: testContainsAttribute},
+        data:          {prototype: CharacterData.prototype,             fnInspectWhen: testContainsAttribute},
+        nodeValue:     {prototype: Node.prototype,                      fnInspectWhen: testContainsAttribute},
         checked:       {prototype: HTMLInputElement.prototype,          fnInspectWhen: testContainsAttribute},
         value:         {prototype: HTMLTextAreaElement.prototype,       fnInspectWhen: testContainsAttribute}        
     });
@@ -278,7 +278,7 @@
     }
 
     function setKeyTrigger(keyEventProperties, invokeFunction) {
-        setEventTrigger('keydown', invokeFunction, (event) => containsProperties(keyEventProperties, event));
+        setEventTrigger('keydown', invokeFunction, (event) => containsProperties(keyEventProperties, event), false);
     }
 
     function containsProperties(objectWithProperties, objectToCheck) {
@@ -312,12 +312,13 @@
 
     function breakOnPropertyAccess(object, propertyName) {
         const breakFn = () => { debugger };
-        interceptProperty(object, propertyName, breakFn, breakFn);
+        interceptProperty(object, propertyName, breakFn, breakFn, null);
     }
 
     // allow black boxing evaled scripts as 'evaled-script.js'
     function evalScriptsAsEvaledScript() {
         var originalEval = eval;
+        //@ts-ignore
         eval = function(script) {
             return originalEval(script + "\n//# sourceURL=evaled-script.js");
         }
@@ -327,7 +328,7 @@
     const exports = Object.assign(Object.create(null), {
         profileWaitForTrigger, breakOnKeypress, testEvents, inspectElements, profile, breakOnTimeout, listPrototypes, breakOnPropertyAccess, evalScriptsAsEvaledScript
     });
-    window.d = exports;
+    (window as any).d = exports;
 
     console.log(moduleName + " module installed");
 })();
