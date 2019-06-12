@@ -5,14 +5,13 @@ const log = wx.makeLogger('PageProxy')
 log.log("loaded");
 
 wx.subscribeMessages('debugger.install', (a,b)=>{
-    log.log('installing debugger')
-    
-    wx.content.executeFile('dist/debug-api.js')
+    log.log('executing command')
+    window.postMessage({
+        direction: "from-content-script",
+        message: "Message from the content script"
+      }, '*');
     return 'installed'
 })
 
-log.log('running inline script')
-// if (!wx.content.executeScript('console.log("I ran at start")'))
-//     log.log('no head element')
-
+wx.content.executeFile('dist/page-interface.js')
 wx.content.executeFile('dist/debug-api.js')

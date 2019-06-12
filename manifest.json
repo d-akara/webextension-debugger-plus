@@ -42,7 +42,7 @@
     ],
     
     // allow a script to be injected into the page source
-    "web_accessible_resources": ["dist/debug-api.js"]
+    "web_accessible_resources": ["dist/debug-api.js", "dist/page-interface.js"]
     
     // page actions don't seem that useful.
     // you can't hide the action.  hide/show actuall enable or disable
