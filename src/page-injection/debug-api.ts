@@ -31,6 +31,10 @@
         }
     }
 
+    // TODO
+    // function restoreFunction
+    // function listInterceptors
+
     function interceptProperty(object, propertyName, getFunction, setFunction, conditionFunction) {
         const originalPropertyDescriptor = Object.getOwnPropertyDescriptor(object, propertyName);
         const newPropertyDescriptor:any = {
