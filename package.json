@@ -12,9 +12,11 @@
         "webextension-common": "file:../webextension-common"
     },
     "devDependencies": {
-        "webextension-polyfill": "^0.3.1",
+        "fuse-box": "^3.7.1",
+        "typescript": "^3.8.3",
         "web-ext-types": "github:michael-zapata/web-ext-types",
-        "fuse-box": "^3.6.0",
-        "typescript": "^3.5.1"
+        "webextension-polyfill": "^0.6.0",
+        "webpack": "^5.0.0-beta.16",
+        "ts-loader": "7.0.5"
     }
 }
