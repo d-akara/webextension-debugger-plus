@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "module": "system",
+        "module": "CommonJS",
         "outDir": "dist",
         "rootDirs": [
             "../webextension-common"

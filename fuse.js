@@ -5,6 +5,7 @@ const fuse = FuseBox.init({
     output:'dist/$name.js',
     sourceMaps: {inline: true}   
 })
+// https://fuse-box.org/docs/development/instructions
 fuse.bundle("polyfills").instructions(`> node_modules/webextension-common/dist/Polyfills.js`).globals({'webextension-polyfill': 'browser'})  // polyfills and the fusebox runtime loader
 fuse.bundle("webextension-common").instructions(`+webextension-common`) // make bundle of the webextension-common module
 fuse.bundle('page-proxy').instructions(">![src/webextension/content/PageProxy.ts]").watch('src/**')
