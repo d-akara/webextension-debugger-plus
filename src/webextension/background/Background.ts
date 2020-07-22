@@ -20,8 +20,9 @@ wx.onBrowserAction(action => {
     wx.createWindow('src/webextension/Popup.html')
 })
 
-wx.listenContentLoaded((event:wx.EventSource)=> {
-    log.log('loaded event: ',event);
+wx.listenContentLoaded(async (event:wx.EventSource)=> {
+    const tab = await wx.tabFromId(event.tabId)
+    log.log('loaded event: ', wx.tabInfo(tab));
 })
 
 wx.storage.memSet({test: 'value1'})

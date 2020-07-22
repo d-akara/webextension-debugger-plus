@@ -1,9 +1,5 @@
 var webpack = require('webpack');
 
-//
-
-// await new Bundler('src/webextension/devtools/devtools-panel.ts', options).bundle();
-// new Bundler('src/webextension/content/PageProxy.ts', options).bundle();
 const options_default = {
     mode: 'development',
     devtool: 'source-map',
@@ -21,13 +17,13 @@ const options_default = {
             }
         ]
     },
-    plugins: [
-        {
-            apply(compiler) {
-                console.dir(compiler.options)
-            }
-        }
-    ]
+    // plugins: [
+    //     {
+    //         apply(compiler) {
+    //             console.dir(compiler.options)
+    //         }
+    //     }
+    // ]
     // externals: {
     //     'webextension-common': 'webextension-common'
     // }
@@ -36,7 +32,7 @@ const options_default = {
 const options_optimization = {
     optimization: {
         runtimeChunk: {
-            name: 'webpack-runtime'
+            name: 'webpack-runtime' // create one bundle with webpack runtime code
         }
     }
 }
@@ -53,7 +49,7 @@ webpack([
         'options': { import: './src/webextension/options/Options.ts', dependOn: 'webextension-common'},
         'devtools': { import: './src/webextension/devtools/Devtools.ts', dependOn: 'webextension-common'},
         'background': { import: './src/webextension/background/Background.ts', dependOn: 'webextension-common'},
-        'devtools_panel': { import: './src/webextension/devtools/devtools-panel.ts', dependOn: 'webextension-common'},
+        'devtools-panel': { import: './src/webextension/devtools/devtools-panel.ts', dependOn: 'webextension-common'},
     },
     output: { filename: '[name].js' } },
 ], (err, stats) => { // Stats Object
