@@ -1,5 +1,6 @@
 import * as wx from 'webextension-common'
 const log = wx.makeLogger('PopUp')
+wx.setLogger(log)
 
 log.log('Popup loaded')
 

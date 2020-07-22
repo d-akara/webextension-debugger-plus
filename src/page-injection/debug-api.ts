@@ -1,3 +1,8 @@
+interface Console {
+    profile(name: string): void;
+    profileEnd(): void;
+}
+
 (function () {
 
     //"use strict";

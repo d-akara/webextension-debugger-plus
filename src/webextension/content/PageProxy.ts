@@ -6,6 +6,7 @@ try {
   log.log("loaded");
   
   wx.subscribeMessages('debugger.install', (a,b)=>{
+    console.log(document.title)
     log.log('executing command')
 
     const target = window.location.protocol + '//' + window.location.host
@@ -27,5 +28,6 @@ try {
   });
 
 } catch (error) {
+  console.log(error)
   log.log(error)
 }

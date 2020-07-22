@@ -5,15 +5,14 @@
     "version": "1.0.0",
     "main": "main",
     "scripts": {
-        "build-watch": "node fuse.js",
+        "build-watch": "node webpack.js",
         "build-injections": "cd src/page-injection && tsc"
     },
     "dependencies": {
         "webextension-common": "file:../webextension-common"
     },
     "devDependencies": {
-        "fuse-box": "^3.7.1",
-        "typescript": "^3.8.3",
+        "typescript": "^3.9.5",
         "web-ext-types": "github:michael-zapata/web-ext-types",
         "webextension-polyfill": "^0.6.0",
         "webpack": "^5.0.0-beta.16",

@@ -14,7 +14,7 @@ try {
     });
 
     wx.sendMessageTabs({}, { event: "popup.event", content: 'message from options' }).then(response => {
-        response.filter( r => !r.isError ).forEach( r => log.log('promise all response', r))
+        response.filter( r => !r.isError ).forEach( r => log.log('promise all response', wx.tabInfo(r.tab), r.content))
     }).catch(reason => {
         log.log('handle error', JSON.stringify(reason))
     });
