@@ -27,6 +27,12 @@ try {
     }
   });
 
+  wx.subscribeMessages('webextension.ping', (a,b)=>{
+    console.log(document.title)
+    log.log('content test relay', a, b)
+    return a
+  })
+
 } catch (error) {
   console.log(error)
   log.log(error)
