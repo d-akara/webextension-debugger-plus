@@ -7,8 +7,9 @@
         ],
         "target": "esnext",
         "moduleResolution": "node",
-       // "typeRoots": ["node_modules/@types", "node_modules/web-ext-types"],
+        "typeRoots": ["node_modules/@types", "node_modules/web-ext-types"],
         "baseUrl": ".",
-        "noImplicitUseStrict": true // allow setting 'eval'
+        "noImplicitUseStrict": true, // allow setting 'eval',
+        "sourceMap": true
     }
 }

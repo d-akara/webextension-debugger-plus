@@ -1,7 +1,12 @@
-interface Console {
+import * as wx from 'webextension-common'
+
+interface Console extends globalThis.Console {
     profile(name: string): void;
     profileEnd(): void;
 }
+
+declare var console:Console
+
 
 (function () {
 
@@ -341,3 +346,9 @@ interface Console {
 
     console.log(moduleName + " module installed");
 })();
+
+wx.page.registerExtensionListener(message => {
+    console.log(message);
+    (window as any).d.listPrototypes(window)
+    wx.page.sendMessageToContentScript("command executed")
+})

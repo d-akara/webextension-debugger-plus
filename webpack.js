@@ -36,10 +36,7 @@ const options_optimization = {
         }
     }
 }
-// fuse.bundle("polyfills").instructions(`> node_modules/webextension-common/dist/Polyfills.js`).globals({'webextension-polyfill': 'browser'})  // polyfills and the fusebox runtime loader
 webpack([
-    //   { ...options_default, ...options_optimization, entry: './node_modules/webextension-common/dist/Polyfills.js',   output: { filename: 'polyfills-[name].js' } },
-    
     { ...options_default, ...options_optimization, 
         entry: {
         'polyfills': {import: './node_modules/webextension-common/dist/Polyfills.js'},
@@ -50,6 +47,21 @@ webpack([
         'devtools': { import: './src/webextension/devtools/Devtools.ts', dependOn: 'webextension-common'},
         'background': { import: './src/webextension/background/Background.ts', dependOn: 'webextension-common'},
         'devtools-panel': { import: './src/webextension/devtools/devtools-panel.ts', dependOn: 'webextension-common'},
+    },
+    output: { filename: '[name].js' } },
+], (err, stats) => { // Stats Object
+  if (err)
+    process.stdout.write(err + '\n');
+  if (stats)
+    process.stdout.write(stats.toString() + '\n');
+})
+
+webpack([
+    { ...options_default, 
+        devtool: 'inline-source-map',
+        mode: 'production',
+        entry: {
+        'debug-api': {import: './src/page-injection/debug-api.ts'}
     },
     output: { filename: '[name].js' } },
 ], (err, stats) => { // Stats Object
