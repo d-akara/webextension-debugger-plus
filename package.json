@@ -15,7 +15,8 @@
         "typescript": "^3.9.5",
         "web-ext-types": "github:michael-zapata/web-ext-types",
         "webextension-polyfill": "^0.6.0",
-        "webpack": "^5.0.0-beta.16",
-        "ts-loader": "7.0.5"
+        "webpack": "^5.0.0-beta.22",
+        "ts-loader": "8.0.1",
+        "source-map-loader": "^1.0.1"
     }
 }

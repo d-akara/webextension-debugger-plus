@@ -14,6 +14,11 @@ const options_default = {
                         transpileOnly: true
                     }
                 }
+            },
+            {
+                test: /\.js$/,
+                enforce: 'pre',
+                use: ['source-map-loader']
             }
         ]
     },
@@ -59,7 +64,7 @@ webpack([
 webpack([
     { ...options_default, 
         devtool: 'inline-source-map',
-        mode: 'production',
+        mode: 'development',
         entry: {
         'debug-api': {import: './src/page-injection/debug-api.ts'}
     },

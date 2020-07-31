@@ -9,13 +9,13 @@ try {
     console.log(document.title)
     log.log('executing command')
     
-    wx.content.sendMessageToPage('Message from the content script')
+    wx.content.sendMessageToPage({event: 'signal', content:'Message from the content script'})
     return 'installed'
   })
 
   wx.content.executeFile('dist/debug-api.js')
 
-  wx.content.registerPageListener(message => console.log('event received in content', message))
+  wx.content.subscribePageMessages('signal', message => console.log('event received in content', message))
 
   wx.subscribeMessages('webextension.ping', (a,b)=>{
     console.log(document.title)
