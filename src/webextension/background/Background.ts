@@ -4,26 +4,25 @@ wx.background.startMemoryStorage()
 wx.background.startMessageProxy()
 const log = wx.makeLogger('Background')
 
-log.log('loaded')
+try{
+    log.log('loaded')
 
-// wx.subscribeMessages('debugger.install', (a,b)=>{
-//     log.log('installing debugger')
+    wx.onBrowserAction(async action => {
+        const window = await wx.createWindow({url:'src/webextension/Popup.html'})
+        //const tab = await wx.createTab({url:'src/webextension/Popup.html'})
+        
+    })
 
-//     const url = browser.runtime.getURL("dist/debug-api.js")
-//     var elt = document.createElement("script");
-//     elt.innerHTML = "window.foo = {bar:function(){/*whatever*/}};"
-//     document.head.appendChild(elt);
-//     return 'installed'
-// })
+    wx.listenContentLoaded(async (event:wx.EventSource)=> {
+        const tab = await wx.tabFromId(event.tabId)
+        log.log('loaded event: ', wx.tabInfo(tab));
+    })
 
-wx.onBrowserAction(action => {
-    wx.createWindow('src/webextension/Popup.html')
-})
+    wx.storage.memSet({test: 'value1'})
+    log.log(wx.storage.memGet('test'))
 
-wx.listenContentLoaded(async (event:wx.EventSource)=> {
-    const tab = await wx.tabFromId(event.tabId)
-    log.log('loaded event: ', wx.tabInfo(tab));
-})
-
-wx.storage.memSet({test: 'value1'})
-log.log(wx.storage.memGet('test'))
+} catch (error) {
+    console.log(error)
+    log.log(error)
+}
+  

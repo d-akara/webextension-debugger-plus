@@ -4,28 +4,19 @@ const log = wx.makeLogger('PageProxy')
 
 try {
   log.log("loaded");
+  let debugInstalled = false
+
+  wx.subscribeMessages('debug.install', () => {
+    if (!debugInstalled)
+      wx.content.executeFile('dist/debug-api.js')
+    debugInstalled = true
+  })
+
+  wx.content.subscribePageMessages('debug.installed', message => {
+    console.log('event received in content', message)
+    wx.sendMessageToPage({event:'signal'})
+  })
   
-  wx.subscribeMessages('debugger.install', (a,b)=>{
-    console.log(document.title)
-    log.log('executing command')
-    
-    wx.content.sendMessageToPage({event: 'signal', content:'Message from the content script'})
-    return 'installed'
-  })
-
-  wx.content.executeFile('dist/debug-api.js')
-
-  wx.content.subscribePageMessages('signal', message => console.log('event received in content', message))
-
-  wx.subscribeMessages('webextension.ping', (a,b)=>{
-    console.log(document.title)
-    log.log('content test relay', a, b)
-    return a
-  })
-
-  wx.fetchExtensionFile('dist/page-interface.js').then(text => console.log(text))
-
-
 
 } catch (error) {
   console.log(error)

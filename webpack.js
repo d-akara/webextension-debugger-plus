@@ -2,6 +2,7 @@ var webpack = require('webpack');
 
 const options_default = {
     mode: 'development',
+    watch: true,
     devtool: 'source-map',
     module: {
         rules: [

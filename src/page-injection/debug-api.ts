@@ -334,12 +334,10 @@ export function evalScriptsAsEvaledScript() {
     }
 }
 
-
-
-wx.page.subscribeExtensionMessages('signal', message => {
-    console.log(message);
+wx.page.subscribeExtensionMessages('signal', () => {
     listPrototypes(window)
     wx.page.sendMessageToContentScript({event:'signal', content:'command executed'})
 })
 
+wx.page.sendMessageToContentScript({event:'debug.installed'})
 console.log(moduleName + " module installed");
