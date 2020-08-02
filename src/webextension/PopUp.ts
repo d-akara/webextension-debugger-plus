@@ -5,12 +5,13 @@ wx.setLogger(log)
 log.log('Popup loaded')
 
 try {
-    wx.sendMessageActiveTab({ event: "debugger.install", content: 'message from Popup' }).then((response) => {
-        log.log(response);
-        const newImageHTMLElement = document.createElement("div");
-        newImageHTMLElement.innerText = response as Object as string
-        document.getElementsByTagName('body')[0].appendChild(newImageHTMLElement);
-    });
+
+    wx.sendMessageActiveTab({event:'debug.install'})
+
+    wx.subscribeMessages('webextension.tab.create', event => {
+        log.log(event)
+    })
+
 } catch (error) {
     console.log(error)
     log.log(error.toString())
