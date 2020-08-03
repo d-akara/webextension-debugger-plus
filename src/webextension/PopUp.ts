@@ -4,12 +4,12 @@ wx.setLogger(log)
 
 log.log('Popup loaded')
 
+declare var window:any;
 try {
-
     wx.sendMessageActiveTab({event:'debug.install'})
 
-    wx.subscribeMessages('webextension.tab.create', event => {
-        log.log(event)
+    wx.subscribeMessages(wx.EVENT_ID_TAB_CREATE, event => {
+        log.log('received', event)
     })
 
 } catch (error) {
