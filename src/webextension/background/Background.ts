@@ -8,18 +8,22 @@ try{
     log.log('loaded')
 
     wx.onBrowserAction(async action => {
-        const window = await wx.createWindow({url:'src/webextension/Popup.html'})
+        const window = await wx.createWindow({url:'src/webextension/Popup.html', type:"popup"})
+        console.log('created window', window)
         //const tab = await wx.createTab({url:'src/webextension/Popup.html'})
         
-    })
+    });
 
-    wx.listenContentLoaded(async (event:wx.EventSource)=> {
-        const tab = await wx.tabFromId(event.tabId)
-        log.log('loaded event: ', wx.tabInfo(tab));
-    })
+    // wx.listenContentLoaded(async (event:wx.EventSource)=> {
+    //     const tab = await wx.tabFromId(event.tabId)
+    //     log.log('loaded event: ', wx.tabInfo(tab));
+    // });
 
-    wx.storage.memSet({test: 'value1'})
-    log.log(wx.storage.memGet('test'))
+    (async function() {
+        await wx.storage.memSet({test: 'value1'})
+        const result = await wx.storage.memGet('test')
+        log.log(result)
+    })()
 
 } catch (error) {
     console.log(error)
