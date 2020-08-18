@@ -9,14 +9,17 @@
         "build-injections": "cd src/page-injection && tsc"
     },
     "dependencies": {
-        "webextension-common": "file:../webextension-common"
+        "webextension-common": "file:../webextension-common",
+        "hyperapp": "2.0.8",
+        "goober": "2.0.5",
+        "goober-autoprefixer": "1.2.0"
     },
     "devDependencies": {
         "typescript": "^3.9.5",
         "web-ext-types": "github:michael-zapata/web-ext-types",
         "webextension-polyfill": "^0.6.0",
         "webpack": "^5.0.0-beta.22",
-        "ts-loader": "8.0.1",
+        "ts-loader": "8.0.2",
         "source-map-loader": "^1.0.1"
     }
 }

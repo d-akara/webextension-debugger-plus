@@ -11,8 +11,6 @@
     },
 
     "browser_action": {  // create a browser toolbar entry
-        "default_title": "Devtools Debugger Plus",
-        "default_icon": "icons/chevron-double-up.png",
         "browser_style": true
     },
 

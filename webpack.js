@@ -48,7 +48,7 @@ webpack([
         'polyfills': {import: './node_modules/webextension-common/dist/Polyfills.js'},
         'webextension-common':  {import: 'webextension-common' },
         'page-proxy': { import: './src/webextension/content/PageProxy.ts', dependOn: 'webextension-common'},
-        'popup': { import: './src/webextension/PopUp.ts', dependOn: 'webextension-common'},
+        'popup': { import: './src/webextension/browser-action/PopUp.ts', dependOn: 'webextension-common'},
         'options': { import: './src/webextension/options/Options.ts', dependOn: 'webextension-common'},
         'devtools': { import: './src/webextension/devtools/Devtools.ts', dependOn: 'webextension-common'},
         'background': { import: './src/webextension/background/Background.ts', dependOn: 'webextension-common'},
