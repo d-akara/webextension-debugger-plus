@@ -13,8 +13,7 @@ try {
   })
 
   wx.content.subscribePageMessages('debug.installed', message => {
-    console.log('event received in content', message)
-    wx.sendMessageToPage({event:'signal'})
+    wx.sendMessageToPage({event:'debug-hooks.installConsole', content: '_d'})
   })
   
 

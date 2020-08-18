@@ -1,4 +1,5 @@
 import * as wx from 'webextension-common'
+import { styled } from 'goober';
 
 interface Console extends globalThis.Console {
     profile(name: string): void;
@@ -7,7 +8,7 @@ interface Console extends globalThis.Console {
 
 declare var console:Console
 
-const moduleName = "debug";
+const moduleName = "debug-hooks";
 const symbolOriginal = Symbol('original-implementation');
 
 function interceptFunction(object, methodName, beforeFunction, conditionFunction) {
@@ -334,9 +335,37 @@ export function evalScriptsAsEvaledScript() {
     }
 }
 
+export function help() {
+    const styleFunction = "color:mediumorchid;font-weight: bold;"
+    const styleParameters = "color:mediumaquamarine;"
+    const styleDescription = "color:lightgray"
+    const apis = [
+        {function:'listPrototypes', parameters: '(object)', description: 'list all prototypes of the object'},
+        {function:'breakOnPropertyAccess', parameters: '(object, propertyName)', description: 'break in debugger when property of object is read or set'},
+        {function:'breakOnKeypress', parameters: '(KeyboardEvent)', description: 'break once in debugger when a key is pressed.  Default is ctrl key. https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent'},
+        {function:'breakOnTimeout', parameters: '(timeoutMilliseconds)', description: 'break in debugger on timeout'},
+        {function:'testEvents', parameters: '(eventType, enable)', description: 'log all events of type. enable = true|false.  Event types https://developer.mozilla.org/en-US/docs/Web/Events'},
+    ]
+    for (const api of apis) {
+        console.log("%c%s%c%s %c%s", styleFunction, api.function, styleParameters, api.parameters, styleDescription, api.description);
+    }
+}
+
 wx.page.subscribeExtensionMessages('signal', () => {
     listPrototypes(window)
     wx.page.sendMessageToContentScript({event:'signal', content:'command executed'})
+})
+
+wx.page.subscribeExtensionMessages('debug-hooks.installConsole', (key:string) => {
+    const consoleApis:any = window[key] = {}
+    consoleApis.help = help
+    consoleApis.listPrototypes = listPrototypes;
+    consoleApis.breakOnPropertyAccess = breakOnPropertyAccess;
+    consoleApis.breakOnKeypress = breakOnKeypress;
+    consoleApis.breakOnTimeout = breakOnTimeout;
+    consoleApis.testEvents = testEvents;
+    console.log(moduleName, "console API installed as global", key)
+    console.log(moduleName, key + '.help()', 'display help for console API commands')
 })
 
 wx.page.sendMessageToContentScript({event:'debug.installed'})
