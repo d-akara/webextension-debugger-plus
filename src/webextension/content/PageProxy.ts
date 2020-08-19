@@ -13,7 +13,7 @@ try {
   })
 
   wx.content.subscribePageMessages('debug.installed', message => {
-    wx.sendMessageToPage({event:'debug-hooks.installConsole', content: '_d'})
+    wx.sendMessageToPage({event:'debug-hooks.installConsole'})
   })
   
 

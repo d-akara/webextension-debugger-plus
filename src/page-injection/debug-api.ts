@@ -1,5 +1,4 @@
 import * as wx from 'webextension-common'
-import { styled } from 'goober';
 
 interface Console extends globalThis.Console {
     profile(name: string): void;
@@ -10,6 +9,27 @@ declare var console:Console
 
 const moduleName = "debug-hooks";
 const symbolOriginal = Symbol('original-implementation');
+let CONSOLE_KEY = 'd'
+
+const styleFunction = "color:mediumorchid;font-weight: bold;"
+const styleParameters = "color:mediumaquamarine;"
+const styleDescription = "color:lightgray"
+function log(...parameters) {
+    let styleFormat = ''
+    let params = []
+    
+    for (let index = 0; index < parameters.length; index+=2) {
+        const style = parameters[index]
+        const value = parameters[index+1]
+        styleFormat += '%c%s'
+        params.push(style)
+        params.push(value)
+    }
+
+    console.log.apply(this, [ styleFormat, ...params])
+}
+
+
 
 function interceptFunction(object, methodName, beforeFunction, conditionFunction) {
 
@@ -170,6 +190,10 @@ const inspectElements_Settings = Object.assign(Object.create(null), {
     breakOnInspect: false
 });
 
+export function showInspectElementsConfig() {
+    console.dir(inspectElements_Settings)
+}
+
 export function inspectElements() {
     const settings = inspectElements_Settings;
 
@@ -228,9 +252,9 @@ function logEvent(event) {
     console.log(event);
 }
 
-export function testEvents(eventType, enable) {
+export function logEvents(eventType, enable) {
     if (eventType === undefined) {
-        console.log("EXAMPLE:  testEvents('keydown', true)");
+        console.log("EXAMPLE:  logEvents('keydown', true)");
         return;
     }
     if (enable) {
@@ -238,26 +262,26 @@ export function testEvents(eventType, enable) {
         console.log("logging all '" + eventType + "' events.");
     } else {
         document.removeEventListener(eventType, logEvent, true);
-        console.log("stoped logging all '" + eventType + "' events.");
+        console.log("stopped logging all '" + eventType + "' events.");
     }
 }
 
-export function profileWaitForTrigger(startEventProperties, duration) {
-    if (startEventProperties === undefined) {
+export function profileWaitForTrigger(triggerEventProperties, duration) {
+    if (triggerEventProperties === undefined) {
         console.log("EXAMPLE:  profileWaitForTrigger({type: 'click'}, 100)");
         return;
     }
 
     function armProfileTrigger() {
-        setEventTrigger(startEventProperties.type, () => profile(duration), (event) => containsProperties(startEventProperties, event), true);
-        console.log("profile trigger set.  profiler will start when event matches:", startEventProperties);
+        setEventTrigger(triggerEventProperties.type, () => profile(duration), (event) => containsProperties(triggerEventProperties, event), true);
+        console.log("profile trigger set.  profiler will start when event matches:", triggerEventProperties);
     }
 
     setKeyTrigger({
         ctrlKey: true
     }, armProfileTrigger);
 
-    console.log("profile trigger will be set when you press [ctrl]");
+    console.log("profile trigger will be armed when you press [ctrl]");
 }
 
 export function profile(duration) {
@@ -292,6 +316,11 @@ function setKeyTrigger(keyEventProperties, invokeFunction) {
     setEventTrigger('keydown', invokeFunction, (event) => containsProperties(keyEventProperties, event), false);
 }
 
+/**
+ * Determine if target object contains all properties
+ * @param objectWithProperties - properties that must be in target object
+ * @param objectToCheck - target object to verify contains all properties
+ */
 function containsProperties(objectWithProperties, objectToCheck) {
     for (const property of Object.getOwnPropertyNames(objectWithProperties)) {
         if (objectToCheck[property] !== objectWithProperties[property]) {
@@ -336,37 +365,47 @@ export function evalScriptsAsEvaledScript() {
 }
 
 export function help() {
-    const styleFunction = "color:mediumorchid;font-weight: bold;"
-    const styleParameters = "color:mediumaquamarine;"
-    const styleDescription = "color:lightgray"
     const apis = [
-        {function:'listPrototypes', parameters: '(object)', description: 'list all prototypes of the object'},
-        {function:'breakOnPropertyAccess', parameters: '(object, propertyName)', description: 'break in debugger when property of object is read or set'},
         {function:'breakOnKeypress', parameters: '(KeyboardEvent)', description: 'break once in debugger when a key is pressed.  Default is ctrl key. https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent'},
+        {function:'breakOnPropertyAccess', parameters: '(object, propertyName)', description: 'break in debugger when property of object is read or set'},
         {function:'breakOnTimeout', parameters: '(timeoutMilliseconds)', description: 'break in debugger on timeout'},
-        {function:'testEvents', parameters: '(eventType, enable)', description: 'log all events of type. enable = true|false.  Event types https://developer.mozilla.org/en-US/docs/Web/Events'},
+        {function:'evalScriptsAsEvaledScript', parameters: '()', description: 'wraps eval() so that any eval script will have "evaled-script.js" as the source name.  Useful for blackboxing'},
+        {function:'help', parameters: '()', description: 'show help in console'},
+        {function:'inspectElements', parameters: '()', description: 'turn on element inspector'},
+        {function:'listPrototypes', parameters: '(object)', description: 'list all prototypes of the object'},
+        {function:'logEvents', parameters: '(eventType, enable)', description: 'log all events of type. enable = true|false.  Event types https://developer.mozilla.org/en-US/docs/Web/Events'},
+        {function:'profile', parameters: '(duration)', description: 'Capture profile for duration specified.'},
+        {function:'profileWaitForTrigger', parameters: '(triggerEventProperties, duration)', description: 'Trigger profiler automatically when event properties match specified properties of triggerEventProperties.  Event properties https://developer.mozilla.org/en-US/docs/Web/API/Event'},
+        {function:'showInspectElementsConfig', parameters: '()', description: 'Show inspectElements configuration object.  Modify object in console to change settings'},
     ]
     for (const api of apis) {
-        console.log("%c%s%c%s %c%s", styleFunction, api.function, styleParameters, api.parameters, styleDescription, api.description);
+        console.log("%c%s.%c%s%c%s %c%s", styleParameters, CONSOLE_KEY, styleFunction, api.function, styleParameters, api.parameters, styleDescription, api.description);
     }
 }
 
-wx.page.subscribeExtensionMessages('signal', () => {
-    listPrototypes(window)
-    wx.page.sendMessageToContentScript({event:'signal', content:'command executed'})
+// Can be used from content script to check if this module has been installed
+wx.page.subscribeExtensionMessages('debug-hooks.ping', () => {
+    wx.page.sendMessageToContentScript({event:'debug-hooks.ping'})
 })
 
 wx.page.subscribeExtensionMessages('debug-hooks.installConsole', (key:string) => {
-    const consoleApis:any = window[key] = {}
-    consoleApis.help = help
-    consoleApis.listPrototypes = listPrototypes;
-    consoleApis.breakOnPropertyAccess = breakOnPropertyAccess;
+    CONSOLE_KEY = CONSOLE_KEY || key
+    const consoleApis:any = window[CONSOLE_KEY] = {}
     consoleApis.breakOnKeypress = breakOnKeypress;
+    consoleApis.breakOnPropertyAccess = breakOnPropertyAccess;
     consoleApis.breakOnTimeout = breakOnTimeout;
-    consoleApis.testEvents = testEvents;
-    console.log(moduleName, "console API installed as global", key)
-    console.log(moduleName, key + '.help()', 'display help for console API commands')
+    consoleApis.evalScriptsAsEvaledScript = evalScriptsAsEvaledScript;
+    consoleApis.help = help
+    consoleApis.inspectElements = inspectElements
+    consoleApis.listPrototypes = listPrototypes;
+    consoleApis.logEvents = logEvents;
+    consoleApis.profile = profile;
+    consoleApis.profileWaitForTrigger = profileWaitForTrigger;
+    consoleApis.showInspectElementsConfig = showInspectElementsConfig;
+    log(styleParameters, moduleName + ': ', styleDescription, "console API installed as global ", styleParameters, CONSOLE_KEY)
+    log(styleParameters, moduleName + ': ', styleFunction, CONSOLE_KEY + '.help()', styleDescription, ' showing help for console API commands')
+    help()
 })
 
 wx.page.sendMessageToContentScript({event:'debug.installed'})
-console.log(moduleName + " module installed");
+log(styleParameters, moduleName + ': ', styleDescription, "module installed")
