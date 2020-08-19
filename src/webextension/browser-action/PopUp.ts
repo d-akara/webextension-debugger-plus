@@ -10,10 +10,6 @@ log.log('Popup loaded')
 
 declare var window:any;
 try {
-    wx.subscribeMessages(wx.EVENT_ID_TAB_CREATE, event => {
-        log.log('received', event)
-    })
-
     window.addEventListener('load', (event) => {
         webApp()
     });
