@@ -10,16 +10,16 @@
     },
     "dependencies": {
         "webextension-common": "file:../webextension-common",
-        "hyperapp": "2.0.8",
-        "goober": "2.0.5",
-        "goober-autoprefixer": "1.2.0"
+        "hyperapp": "2.0.17",
+        "goober": "2.0.37",
+        "goober-autoprefixer": "1.2.1"
     },
     "devDependencies": {
-        "typescript": "^3.9.5",
+        "typescript": "^4.2.4",
         "web-ext-types": "github:michael-zapata/web-ext-types",
-        "webextension-polyfill": "^0.6.0",
-        "webpack": "^5.0.0-beta.22",
-        "ts-loader": "8.0.2",
-        "source-map-loader": "^1.0.1"
+        "webextension-polyfill": "^0.8.0",
+        "webpack": "^5.36.0",
+        "ts-loader": "9.1.1",
+        "source-map-loader": "^2.0.1"
     }
 }
