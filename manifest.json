@@ -7,7 +7,7 @@
     "author": "Chad Meadows",
 
     "background": { // background for long term state
-        "scripts": ["dist/webpack-runtime.js", "dist/polyfills.js", "dist/main.js"]
+        "scripts": ["dist/polyfills.js", "dist/main.js"]
     },
 
     "browser_action": {  // create a browser toolbar entry
@@ -20,7 +20,7 @@
     
     "content_scripts": [{ // runs in context of a loaded page
         "matches": ["<all_urls>"],
-        "js": ["dist/webpack-runtime.js", "dist/polyfills.js", "dist/main.js"],
+        "js": ["dist/polyfills.js", "dist/main.js"],
         "run_at": "document_start"
         }],
         

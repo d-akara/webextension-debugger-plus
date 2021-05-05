@@ -19,7 +19,7 @@ wx.initModule({
         //     //const window = await wx.createWindow({url:'src/webextension/Popup.html', type:"popup"})
         //     //const tab = await wx.createTab({url:'src/webextension/Popup.html'})
         // });
-    
+        
         // wx.listenContentLoaded(async (event:wx.EventSource)=> {
         //     const tab = await wx.tabFromId(event.tabId)
         //     log.log('loaded event: ', wx.tabInfo(tab));
