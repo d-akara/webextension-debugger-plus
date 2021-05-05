@@ -43,10 +43,9 @@ const options_optimization = {
     }
 }
 webpack([
-    { ...options_default, ...options_optimization, 
+    { ...options_default, 
         entry: {
         'polyfills': {import: './node_modules/webextension-common/dist/Polyfills.js'},
-        'webextension-common':  {import: 'webextension-common' },
         'main': { import: './src/main.ts'},
     },
     output: { filename: '[name].js' } },
